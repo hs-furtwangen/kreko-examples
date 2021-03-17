@@ -1,0 +1,21 @@
+{
+  "name": "example",
+  "version": "0.1.0",
+  "description": "just another simple example",
+  "main": "server.js",
+  "dependencies": {
+    "connect": "^3.7.0",
+    "http": "^0.0.1-security",
+    "mongodb": "^3.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.31"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "transpile": "tsc scripts/*.ts",
+    "start": "node server.js"
+  },
+  "author": "norbert.schnell@hs-furtwangen.de",
+  "license": "BSD"
+}
