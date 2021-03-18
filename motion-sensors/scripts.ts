@@ -54,30 +54,38 @@ namespace motionSensors {
 
   window.addEventListener("touchmove", (e) => e.preventDefault());
 
-  if (DeviceMotionEvent && DeviceMotionEvent.requestPermission &&
-    DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
+  if (DeviceMotionEvent && DeviceOrientationEvent) {
     document.body.addEventListener("click", () => {
-      DeviceMotionEvent.requestPermission()
-        .then((response) => {
-          if (response == "granted") {
-            window.addEventListener("devicemotion", onDeviceMotion);
-            startButton.classList.add("hide");
-            display.classList.remove("hide");
-          }
-        })
-        .catch(console.error);
+      if (DeviceMotionEvent.requestPermission &&
+        DeviceOrientationEvent.requestPermission) {
+        DeviceMotionEvent.requestPermission()
+          .then((response) => {
+            if (response == "granted") {
+              window.addEventListener("devicemotion", onDeviceMotion);
+              startButton.classList.add("hide");
+              display.classList.remove("hide");
+            } else {
+              promptOnStartScreen("no permission for device motion");
+            }
+          })
+          .catch(console.error);
 
-      DeviceOrientationEvent.requestPermission()
-        .then((response) => {
-          if (response == "granted") {
-            window.addEventListener("deviceorientation", onDeviceOrientation);
-          }
-        })
-        .catch(console.error);
+        DeviceOrientationEvent.requestPermission()
+          .then((response) => {
+            if (response == "granted") {
+              window.addEventListener("deviceorientation", onDeviceOrientation);
+            } else {
+              promptOnStartScreen("no permission for device orientation");
+            }
+          })
+          .catch(console.error);
+      } else {
+        window.addEventListener("devicemotion", onDeviceMotion);
+        window.addEventListener("deviceorientation", onDeviceOrientation);
+      }
     });
   } else {
-    window.addEventListener("devicemotion", onDeviceMotion);
-    window.addEventListener("deviceorientation", onDeviceOrientation);
+    promptOnStartScreen("device motion/orientation not available");
   }
 
   function setBar(bar: HTMLDivElement, value: number): void {
@@ -137,5 +145,9 @@ namespace motionSensors {
     setNumber(oriNumbers[0], evt.alpha);
     setNumber(oriNumbers[1], evt.beta);
     setNumber(oriNumbers[2], evt.gamma);
+  }
+
+  function promptOnStartScreen(msg: string): void {
+    startButton.innerHTML = msg;
   }
 }
