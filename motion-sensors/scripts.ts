@@ -3,7 +3,20 @@ namespace motionSensors {
   const startScreenText: HTMLDivElement = <HTMLDivElement>startScreen.querySelector("div");
   let timeout: NodeJS.Timeout = null;
 
-  const accigBars: HTMLDivElement[] = [
+  /********************************************************
+   * startup code
+   */
+  if (DeviceMotionEvent && DeviceOrientationEvent) {
+    // device/browser seems to support device motion and orientation, check it out
+    document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
+  } else {
+    startScreenText.innerHTML = "device motion/orientation not available";
+  }
+
+  /********************************************************
+   * HTML elements
+   */
+   const accigBars: HTMLDivElement[] = [
     <HTMLDivElement>document.querySelector("#accig-x .bar"),
     <HTMLDivElement>document.querySelector("#accig-y .bar"),
     <HTMLDivElement>document.querySelector("#accig-z .bar"),
@@ -52,15 +65,15 @@ namespace motionSensors {
   ];
 
   const intervalNumber: HTMLDivElement = <HTMLDivElement>document.querySelector("#interval");
+  
+  /********************************************************
+   * 
+   *  device motion/orientation API
+   * 
+   */
+   let scaleAcc = 1;
 
-  if (DeviceMotionEvent && DeviceOrientationEvent) {
-    // device/browser seems to support device motion and orientation, check it out
-    document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
-  } else {
-    startScreenText.innerHTML = "device motion/orientation not available";
-  }
-
-  function checkForDeviceMotionAndOrientation(): void {
+   function checkForDeviceMotionAndOrientation(): void {
     // screen click feedback
     startScreenText.innerHTML = "checking for device motion/orientation...";
     document.body.removeEventListener("click", checkForDeviceMotionAndOrientation);
@@ -73,6 +86,9 @@ namespace motionSensors {
             // got permission, hide start overrlay and listenm
             startScreen.classList.add("hide");
             window.addEventListener("devicemotion", onDeviceMotion);
+
+            // re-invert inverted iOS acceleration values
+            scaleAcc = -1;
           } else {
             startScreenText.innerHTML = "no permission for device motion";
           }
@@ -100,6 +116,7 @@ namespace motionSensors {
       window.addEventListener("deviceorientation", onDeviceOrientation);
     }
   }
+
   function onDeviceMotion(evt: DeviceMotionEvent): void {
     if (timeout) {
       // reset time out and hide start screen
@@ -108,20 +125,20 @@ namespace motionSensors {
     }
 
     const accig: DeviceMotionEventAcceleration = evt.accelerationIncludingGravity;
-    setBiBar(accigBars[0], accig.x / 20);
-    setBiBar(accigBars[1], accig.y / 20);
+    setBiBar(accigBars[0], accig.x * scaleAcc / 20);
+    setBiBar(accigBars[1], accig.y * scaleAcc / 20);
     setBiBar(accigBars[2], accig.z / 20);
-    setNumber(accigNumbers[0], accig.x);
-    setNumber(accigNumbers[1], accig.y);
-    setNumber(accigNumbers[2], accig.z);
+    setNumber(accigNumbers[0], accig.x * scaleAcc);
+    setNumber(accigNumbers[1], accig.y * scaleAcc);
+    setNumber(accigNumbers[2], accig.z * scaleAcc);
 
     const acc: DeviceMotionEventAcceleration = evt.acceleration;
-    setBiBar(accBars[0], acc.x / 20);
-    setBiBar(accBars[1], acc.y / 20);
-    setBiBar(accBars[2], acc.z / 20);
-    setNumber(accNumbers[0], acc.x);
-    setNumber(accNumbers[1], acc.y);
-    setNumber(accNumbers[2], acc.z);
+    setBiBar(accBars[0], acc.x * scaleAcc / 20);
+    setBiBar(accBars[1], acc.y * scaleAcc / 20);
+    setBiBar(accBars[2], acc.z * scaleAcc / 20);
+    setNumber(accNumbers[0], acc.x * scaleAcc);
+    setNumber(accNumbers[1], acc.y * scaleAcc);
+    setNumber(accNumbers[2], acc.z * scaleAcc);
 
     const rot: DeviceMotionEventRotationRate = evt.rotationRate;
     setBiBar(rotBars[0], rot.alpha / 360);
