@@ -1,0 +1,43 @@
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hide {
+  display: none;
+}
+
+#start-screen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+#start-screen div {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  margin-top: -20px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 20px;
+}
+
+#ball {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #fff;
+}
