@@ -4,6 +4,19 @@ var motionSensors;
     const startScreen = document.getElementById("start-screen");
     const startScreenText = startScreen.querySelector("div");
     let timeout = null;
+    /********************************************************
+     * startup code
+     */
+    if (DeviceMotionEvent && DeviceOrientationEvent) {
+        // device/browser seems to support device motion and orientation, check it out
+        document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
+    }
+    else {
+        startScreenText.innerHTML = "device motion/orientation not available";
+    }
+    /********************************************************
+     * HTML elements
+     */
     const accigBars = [
         document.querySelector("#accig-x .bar"),
         document.querySelector("#accig-y .bar"),
@@ -45,13 +58,12 @@ var motionSensors;
         document.querySelector("#ori-gamma .number"),
     ];
     const intervalNumber = document.querySelector("#interval");
-    if (DeviceMotionEvent && DeviceOrientationEvent) {
-        // device/browser seems to support device motion and orientation, check it out
-        document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
-    }
-    else {
-        startScreenText.innerHTML = "device motion/orientation not available";
-    }
+    /********************************************************
+     *
+     *  device motion/orientation API
+     *
+     */
+    let scaleAcc = 1; // scale factor to re-invert iOS acceleration
     function checkForDeviceMotionAndOrientation() {
         // screen click feedback
         startScreenText.innerHTML = "checking for device motion/orientation...";
@@ -64,6 +76,8 @@ var motionSensors;
                     // got permission, hide start overrlay and listenm
                     startScreen.classList.add("hide");
                     window.addEventListener("devicemotion", onDeviceMotion);
+                    // re-invert inverted iOS acceleration values
+                    scaleAcc = -1;
                 }
                 else {
                     startScreenText.innerHTML = "no permission for device motion";
@@ -99,19 +113,19 @@ var motionSensors;
             startScreen.classList.add("hide");
         }
         const accig = evt.accelerationIncludingGravity;
-        setBiBar(accigBars[0], accig.x / 20);
-        setBiBar(accigBars[1], accig.y / 20);
-        setBiBar(accigBars[2], accig.z / 20);
-        setNumber(accigNumbers[0], accig.x);
-        setNumber(accigNumbers[1], accig.y);
-        setNumber(accigNumbers[2], accig.z);
+        setBiBar(accigBars[0], accig.x * scaleAcc / 20);
+        setBiBar(accigBars[1], accig.y * scaleAcc / 20);
+        setBiBar(accigBars[2], accig.z * scaleAcc / 20);
+        setNumber(accigNumbers[0], accig.x * scaleAcc);
+        setNumber(accigNumbers[1], accig.y * scaleAcc);
+        setNumber(accigNumbers[2], accig.z * scaleAcc);
         const acc = evt.acceleration;
-        setBiBar(accBars[0], acc.x / 20);
-        setBiBar(accBars[1], acc.y / 20);
-        setBiBar(accBars[2], acc.z / 20);
-        setNumber(accNumbers[0], acc.x);
-        setNumber(accNumbers[1], acc.y);
-        setNumber(accNumbers[2], acc.z);
+        setBiBar(accBars[0], acc.x * scaleAcc / 20);
+        setBiBar(accBars[1], acc.y * scaleAcc / 20);
+        setBiBar(accBars[2], acc.z * scaleAcc / 20);
+        setNumber(accNumbers[0], acc.x * scaleAcc);
+        setNumber(accNumbers[1], acc.y * scaleAcc);
+        setNumber(accNumbers[2], acc.z * scaleAcc);
         const rot = evt.rotationRate;
         setBiBar(rotBars[0], rot.alpha / 360);
         setBiBar(rotBars[1], rot.beta / 360);
@@ -135,6 +149,11 @@ var motionSensors;
         setNumber(oriNumbers[1], evt.beta);
         setNumber(oriNumbers[2], evt.gamma);
     }
+    /********************************************************
+     *
+     *  her
+     *
+     */
     function setBar(bar, value) {
         if (value >= 0) {
             bar.style.left = "0";

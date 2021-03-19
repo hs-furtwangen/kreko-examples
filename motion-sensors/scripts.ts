@@ -71,7 +71,7 @@ namespace motionSensors {
    *  device motion/orientation API
    * 
    */
-   let scaleAcc = 1;
+   let scaleAcc: number = 1; // scale factor to re-invert iOS acceleration
 
    function checkForDeviceMotionAndOrientation(): void {
     // screen click feedback
@@ -127,7 +127,7 @@ namespace motionSensors {
     const accig: DeviceMotionEventAcceleration = evt.accelerationIncludingGravity;
     setBiBar(accigBars[0], accig.x * scaleAcc / 20);
     setBiBar(accigBars[1], accig.y * scaleAcc / 20);
-    setBiBar(accigBars[2], accig.z / 20);
+    setBiBar(accigBars[2], accig.z * scaleAcc / 20);
     setNumber(accigNumbers[0], accig.x * scaleAcc);
     setNumber(accigNumbers[1], accig.y * scaleAcc);
     setNumber(accigNumbers[2], accig.z * scaleAcc);
@@ -167,7 +167,12 @@ namespace motionSensors {
     setNumber(oriNumbers[2], evt.gamma);
   }
 
-  function setBar(bar: HTMLDivElement, value: number): void {
+  /********************************************************
+   * 
+   *  her
+   * 
+   */
+   function setBar(bar: HTMLDivElement, value: number): void {
     if (value >= 0) {
       bar.style.left = "0";
       bar.style.width = `${100 * value}%`;
