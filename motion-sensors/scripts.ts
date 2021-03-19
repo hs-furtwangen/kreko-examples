@@ -1,6 +1,7 @@
 namespace motionSensors {
-  const startButton: HTMLDivElement = <HTMLDivElement>document.getElementById("start");
-  const display: HTMLDivElement = <HTMLDivElement>document.getElementById("display");
+  const startScreen: HTMLDivElement = <HTMLDivElement>document.getElementById("start-screen");
+  const startScreenText: HTMLDivElement = <HTMLDivElement>startScreen.querySelector("div");
+  let timeout: NodeJS.Timeout = null;
 
   const accigBars: HTMLDivElement[] = [
     <HTMLDivElement>document.querySelector("#accig-x .bar"),
@@ -52,64 +53,60 @@ namespace motionSensors {
 
   const intervalNumber: HTMLDivElement = <HTMLDivElement>document.querySelector("#interval");
 
-  window.addEventListener("touchmove", (e) => e.preventDefault());
-
   if (DeviceMotionEvent && DeviceOrientationEvent) {
-    document.body.addEventListener("click", () => {
-      if (DeviceMotionEvent.requestPermission &&
-        DeviceOrientationEvent.requestPermission) {
-        DeviceMotionEvent.requestPermission()
-          .then((response) => {
-            if (response == "granted") {
-              window.addEventListener("devicemotion", onDeviceMotion);
-              startButton.classList.add("hide");
-              display.classList.remove("hide");
-            } else {
-              promptOnStartScreen("no permission for device motion");
-            }
-          })
-          .catch(console.error);
-
-        DeviceOrientationEvent.requestPermission()
-          .then((response) => {
-            if (response == "granted") {
-              window.addEventListener("deviceorientation", onDeviceOrientation);
-            } else {
-              promptOnStartScreen("no permission for device orientation");
-            }
-          })
-          .catch(console.error);
-      } else {
-        window.addEventListener("devicemotion", onDeviceMotion);
-        window.addEventListener("deviceorientation", onDeviceOrientation);
-      }
-    });
+    // device/browser seems to support device motion and orientation, check it out
+    document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
   } else {
-    promptOnStartScreen("device motion/orientation not available");
+    startScreenText.innerHTML = "device motion/orientation not available";
   }
 
-  function setBar(bar: HTMLDivElement, value: number): void {
-    if (value >= 0) {
-      bar.style.left = "0";
-      bar.style.width = `${100 * value}%`;
-    }
-  }
+  function checkForDeviceMotionAndOrientation(): void {
+    // screen click feedback
+    startScreenText.innerHTML = "checking for device motion/orientation...";
+    document.body.removeEventListener("click", checkForDeviceMotionAndOrientation);
 
-  function setNumber(div: HTMLDivElement, value: number, numDec: number = 2): void {
-    div.innerHTML = value.toFixed(numDec);
-  }
+    if (DeviceMotionEvent.requestPermission && DeviceOrientationEvent.requestPermission) {
+      // ask device motion/orientation permission on iOS
+      DeviceMotionEvent.requestPermission()
+        .then((response) => {
+          if (response == "granted") {
+            // got permission, hide start overrlay and listenm
+            startScreen.classList.add("hide");
+            window.addEventListener("devicemotion", onDeviceMotion);
+          } else {
+            startScreenText.innerHTML = "no permission for device motion";
+          }
+        })
+        .catch(console.error);
 
-  function setBiBar(div: HTMLDivElement, value: number): void {
-    if (value >= 0) {
-      div.style.left = "50%";
-      div.style.width = `${50 * value}%`;
+      DeviceOrientationEvent.requestPermission()
+        .then((response) => {
+          if (response == "granted") {
+            window.addEventListener("deviceorientation", onDeviceOrientation);
+            startScreen.classList.add("hide");
+          } else {
+            startScreenText.innerHTML = "no permission for device orientation";
+          }
+        })
+        .catch(console.error);
     } else {
-      div.style.left = `${50 * (1 + value)}%`;
-      div.style.width = `${50 * -value}%`;
+      // no permission required but set timeout for the case that 
+      timeout = setTimeout(() => {
+        timeout = null;
+        startScreenText.innerHTML = "no device motion/orientation data";
+      }, 1000);
+
+      window.addEventListener("devicemotion", onDeviceMotion);
+      window.addEventListener("deviceorientation", onDeviceOrientation);
     }
   }
-
   function onDeviceMotion(evt: DeviceMotionEvent): void {
+    if (timeout) {
+      // reset time out and hide start screen
+      timeout = null;
+      startScreen.classList.add("hide");
+    }
+
     const accig: DeviceMotionEventAcceleration = evt.accelerationIncludingGravity;
     setBiBar(accigBars[0], accig.x / 20);
     setBiBar(accigBars[1], accig.y / 20);
@@ -139,6 +136,12 @@ namespace motionSensors {
   }
 
   function onDeviceOrientation(evt: DeviceOrientationEvent): void {
+    if (timeout) {
+      // reset timeout and hide start screen
+      timeout = null;
+      startScreen.classList.add("hide");
+    }
+
     setBar(oriBars[0], evt.alpha / 360);
     setBiBar(oriBars[1], evt.beta / 180);
     setBiBar(oriBars[2], evt.gamma / 90);
@@ -147,7 +150,24 @@ namespace motionSensors {
     setNumber(oriNumbers[2], evt.gamma);
   }
 
-  function promptOnStartScreen(msg: string): void {
-    startButton.innerHTML = msg;
+  function setBar(bar: HTMLDivElement, value: number): void {
+    if (value >= 0) {
+      bar.style.left = "0";
+      bar.style.width = `${100 * value}%`;
+    }
+  }
+
+  function setNumber(div: HTMLDivElement, value: number, numDec: number = 2): void {
+    div.innerHTML = value.toFixed(numDec);
+  }
+
+  function setBiBar(div: HTMLDivElement, value: number): void {
+    if (value >= 0) {
+      div.style.left = "50%";
+      div.style.width = `${50 * value}%`;
+    } else {
+      div.style.left = `${50 * (1 + value)}%`;
+      div.style.width = `${50 * -value}%`;
+    }
   }
 }

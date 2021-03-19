@@ -1,8 +1,9 @@
 "use strict";
 var motionSensors;
 (function (motionSensors) {
-    const startButton = document.getElementById("start");
-    const display = document.getElementById("display");
+    const startScreen = document.getElementById("start-screen");
+    const startScreenText = startScreen.querySelector("div");
+    let timeout = null;
     const accigBars = [
         document.querySelector("#accig-x .bar"),
         document.querySelector("#accig-y .bar"),
@@ -44,16 +45,28 @@ var motionSensors;
         document.querySelector("#ori-gamma .number"),
     ];
     const intervalNumber = document.querySelector("#interval");
-    window.addEventListener("touchmove", (e) => e.preventDefault());
-    if (DeviceMotionEvent && DeviceMotionEvent.requestPermission &&
-        DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
-        document.body.addEventListener("click", () => {
+    if (DeviceMotionEvent && DeviceOrientationEvent) {
+        // device/browser seems to support device motion and orientation, check it out
+        document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
+    }
+    else {
+        startScreenText.innerHTML = "device motion/orientation not available";
+    }
+    function checkForDeviceMotionAndOrientation() {
+        // screen click feedback
+        startScreenText.innerHTML = "checking for device motion/orientation...";
+        document.body.removeEventListener("click", checkForDeviceMotionAndOrientation);
+        if (DeviceMotionEvent.requestPermission && DeviceOrientationEvent.requestPermission) {
+            // ask device motion/orientation permission on iOS
             DeviceMotionEvent.requestPermission()
                 .then((response) => {
                 if (response == "granted") {
+                    // got permission, hide start overrlay and listenm
+                    startScreen.classList.add("hide");
                     window.addEventListener("devicemotion", onDeviceMotion);
-                    startButton.classList.add("hide");
-                    display.classList.remove("hide");
+                }
+                else {
+                    startScreenText.innerHTML = "no permission for device motion";
                 }
             })
                 .catch(console.error);
@@ -61,35 +74,30 @@ var motionSensors;
                 .then((response) => {
                 if (response == "granted") {
                     window.addEventListener("deviceorientation", onDeviceOrientation);
+                    startScreen.classList.add("hide");
+                }
+                else {
+                    startScreenText.innerHTML = "no permission for device orientation";
                 }
             })
                 .catch(console.error);
-        });
-    }
-    else {
-        window.addEventListener("devicemotion", onDeviceMotion);
-        window.addEventListener("deviceorientation", onDeviceOrientation);
-    }
-    function setBar(bar, value) {
-        if (value >= 0) {
-            bar.style.left = "0";
-            bar.style.width = `${100 * value}%`;
-        }
-    }
-    function setNumber(div, value, numDec = 2) {
-        div.innerHTML = value.toFixed(numDec);
-    }
-    function setBiBar(div, value) {
-        if (value >= 0) {
-            div.style.left = "50%";
-            div.style.width = `${50 * value}%`;
         }
         else {
-            div.style.left = `${50 * (1 + value)}%`;
-            div.style.width = `${50 * -value}%`;
+            // no permission required but set timeout for the case that 
+            timeout = setTimeout(() => {
+                timeout = null;
+                startScreenText.innerHTML = "no device motion/orientation data";
+            }, 1000);
+            window.addEventListener("devicemotion", onDeviceMotion);
+            window.addEventListener("deviceorientation", onDeviceOrientation);
         }
     }
     function onDeviceMotion(evt) {
+        if (timeout) {
+            // reset time out and hide start screen
+            timeout = null;
+            startScreen.classList.add("hide");
+        }
         const accig = evt.accelerationIncludingGravity;
         setBiBar(accigBars[0], accig.x / 20);
         setBiBar(accigBars[1], accig.y / 20);
@@ -115,12 +123,36 @@ var motionSensors;
         setNumber(intervalNumber, interval, 6);
     }
     function onDeviceOrientation(evt) {
+        if (timeout) {
+            // reset timeout and hide start screen
+            timeout = null;
+            startScreen.classList.add("hide");
+        }
         setBar(oriBars[0], evt.alpha / 360);
         setBiBar(oriBars[1], evt.beta / 180);
         setBiBar(oriBars[2], evt.gamma / 90);
         setNumber(oriNumbers[0], evt.alpha);
         setNumber(oriNumbers[1], evt.beta);
         setNumber(oriNumbers[2], evt.gamma);
+    }
+    function setBar(bar, value) {
+        if (value >= 0) {
+            bar.style.left = "0";
+            bar.style.width = `${100 * value}%`;
+        }
+    }
+    function setNumber(div, value, numDec = 2) {
+        div.innerHTML = value.toFixed(numDec);
+    }
+    function setBiBar(div, value) {
+        if (value >= 0) {
+            div.style.left = "50%";
+            div.style.width = `${50 * value}%`;
+        }
+        else {
+            div.style.left = `${50 * (1 + value)}%`;
+            div.style.width = `${50 * -value}%`;
+        }
     }
 })(motionSensors || (motionSensors = {}));
 //# sourceMappingURL=scripts.js.map
