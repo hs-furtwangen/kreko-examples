@@ -1,22 +1,19 @@
 namespace motionSensors {
-  const startScreen: HTMLDivElement = <HTMLDivElement>document.getElementById("start-screen");
-  const startScreenText: HTMLDivElement = <HTMLDivElement>startScreen.querySelector("div");
-  let timeout: NodeJS.Timeout = null;
+  const motionManager: DeviceMotionAndOrientationManager = new DeviceMotionAndOrientationManager("start-screen");
+  
+  motionManager.onAccelerationIncludingGravity = onAccelerationIncludingGravity;
+  motionManager.onAcceleration = onAcceleration;
+  motionManager.onRotationRate = onRotationRate;
+  motionManager.onOrientation = onOrientation;
+
+  motionManager.start();
 
   /********************************************************
-   * startup code
+   * 
+   *  HTML elements
+   * 
    */
-  if (DeviceMotionEvent && DeviceOrientationEvent) {
-    // device/browser seems to support device motion and orientation, check it out
-    document.body.addEventListener("click", checkForDeviceMotionAndOrientation);
-  } else {
-    startScreenText.innerHTML = "device motion/orientation not available";
-  }
-
-  /********************************************************
-   * HTML elements
-   */
-   const accigBars: HTMLDivElement[] = [
+  const accigBars: HTMLDivElement[] = [
     <HTMLDivElement>document.querySelector("#accig-x .bar"),
     <HTMLDivElement>document.querySelector("#accig-y .bar"),
     <HTMLDivElement>document.querySelector("#accig-z .bar"),
@@ -65,114 +62,56 @@ namespace motionSensors {
   ];
 
   const intervalNumber: HTMLDivElement = <HTMLDivElement>document.querySelector("#interval");
-  
+
   /********************************************************
    * 
    *  device motion/orientation API
    * 
    */
-   let scaleAcc: number = 1; // scale factor to re-invert iOS acceleration
+  function onAccelerationIncludingGravity(x: number, y: number, z: number, interval: number): void {
+    setBiBar(accigBars[0], x  / 20);
+    setBiBar(accigBars[1], y  / 20);
+    setBiBar(accigBars[2], z  / 20);
+    setNumber(accigNumbers[0], x);
+    setNumber(accigNumbers[1], y);
+    setNumber(accigNumbers[2], z);
 
-   function checkForDeviceMotionAndOrientation(): void {
-    // screen click feedback
-    startScreenText.innerHTML = "checking for device motion/orientation...";
-    document.body.removeEventListener("click", checkForDeviceMotionAndOrientation);
-
-    if (DeviceMotionEvent.requestPermission && DeviceOrientationEvent.requestPermission) {
-      // ask device motion/orientation permission on iOS
-      DeviceMotionEvent.requestPermission()
-        .then((response) => {
-          if (response == "granted") {
-            // got permission, hide start overrlay and listenm
-            startScreen.classList.add("hide");
-            window.addEventListener("devicemotion", onDeviceMotion);
-
-            // re-invert inverted iOS acceleration values
-            scaleAcc = -1;
-          } else {
-            startScreenText.innerHTML = "no permission for device motion";
-          }
-        })
-        .catch(console.error);
-
-      DeviceOrientationEvent.requestPermission()
-        .then((response) => {
-          if (response == "granted") {
-            window.addEventListener("deviceorientation", onDeviceOrientation);
-            startScreen.classList.add("hide");
-          } else {
-            startScreenText.innerHTML = "no permission for device orientation";
-          }
-        })
-        .catch(console.error);
-    } else {
-      // no permission required but set timeout for the case that 
-      timeout = setTimeout(() => {
-        timeout = null;
-        startScreenText.innerHTML = "no device motion/orientation data";
-      }, 1000);
-
-      window.addEventListener("devicemotion", onDeviceMotion);
-      window.addEventListener("deviceorientation", onDeviceOrientation);
-    }
-  }
-
-  function onDeviceMotion(evt: DeviceMotionEvent): void {
-    if (timeout) {
-      // reset time out and hide start screen
-      timeout = null;
-      startScreen.classList.add("hide");
-    }
-
-    const accig: DeviceMotionEventAcceleration = evt.accelerationIncludingGravity;
-    setBiBar(accigBars[0], accig.x * scaleAcc / 20);
-    setBiBar(accigBars[1], accig.y * scaleAcc / 20);
-    setBiBar(accigBars[2], accig.z * scaleAcc / 20);
-    setNumber(accigNumbers[0], accig.x * scaleAcc);
-    setNumber(accigNumbers[1], accig.y * scaleAcc);
-    setNumber(accigNumbers[2], accig.z * scaleAcc);
-
-    const acc: DeviceMotionEventAcceleration = evt.acceleration;
-    setBiBar(accBars[0], acc.x * scaleAcc / 20);
-    setBiBar(accBars[1], acc.y * scaleAcc / 20);
-    setBiBar(accBars[2], acc.z * scaleAcc / 20);
-    setNumber(accNumbers[0], acc.x * scaleAcc);
-    setNumber(accNumbers[1], acc.y * scaleAcc);
-    setNumber(accNumbers[2], acc.z * scaleAcc);
-
-    const rot: DeviceMotionEventRotationRate = evt.rotationRate;
-    setBiBar(rotBars[0], rot.alpha / 360);
-    setBiBar(rotBars[1], rot.beta / 360);
-    setBiBar(rotBars[2], rot.gamma / 360);
-    setNumber(rotNumbers[0], rot.alpha);
-    setNumber(rotNumbers[1], rot.beta);
-    setNumber(rotNumbers[2], rot.gamma);
-
-    const interval: number = evt.interval;
     setNumber(intervalNumber, interval, 6);
   }
 
-  function onDeviceOrientation(evt: DeviceOrientationEvent): void {
-    if (timeout) {
-      // reset timeout and hide start screen
-      timeout = null;
-      startScreen.classList.add("hide");
-    }
+  function onAcceleration(x: number, y: number, z: number): void {
+    setBiBar(accBars[0], x  / 20);
+    setBiBar(accBars[1], y  / 20);
+    setBiBar(accBars[2], z  / 20);
+    setNumber(accNumbers[0], x);
+    setNumber(accNumbers[1], y);
+    setNumber(accNumbers[2], z);
+  }
 
-    setBar(oriBars[0], evt.alpha / 360);
-    setBiBar(oriBars[1], evt.beta / 180);
-    setBiBar(oriBars[2], evt.gamma / 90);
-    setNumber(oriNumbers[0], evt.alpha);
-    setNumber(oriNumbers[1], evt.beta);
-    setNumber(oriNumbers[2], evt.gamma);
+  function onRotationRate(alpha: number, beta: number, gamma: number): void {
+    setBiBar(rotBars[0], alpha / 360);
+    setBiBar(rotBars[1], beta / 360);
+    setBiBar(rotBars[2], gamma / 360);
+    setNumber(rotNumbers[0], alpha);
+    setNumber(rotNumbers[1], beta);
+    setNumber(rotNumbers[2], gamma);
+  }
+
+  function onOrientation(alpha: number, beta: number, gamma: number): void {
+    setBar(oriBars[0], alpha / 360);
+    setBiBar(oriBars[1], beta / 180);
+    setBiBar(oriBars[2], gamma / 90);
+    setNumber(oriNumbers[0], alpha);
+    setNumber(oriNumbers[1], beta);
+    setNumber(oriNumbers[2], gamma);
   }
 
   /********************************************************
    * 
-   *  her
+   *  display functions
    * 
    */
-   function setBar(bar: HTMLDivElement, value: number): void {
+  function setBar(bar: HTMLDivElement, value: number): void {
     if (value >= 0) {
       bar.style.left = "0";
       bar.style.width = `${100 * value}%`;
