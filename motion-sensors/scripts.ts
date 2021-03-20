@@ -65,7 +65,7 @@ namespace motionSensors {
 
   /********************************************************
    * 
-   *  device motion/orientation API
+   *  device motion/orientation callbacks
    * 
    */
   function onAccelerationIncludingGravity(x: number, y: number, z: number, interval: number): void {

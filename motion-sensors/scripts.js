@@ -55,7 +55,7 @@ var motionSensors;
     const intervalNumber = document.querySelector("#interval");
     /********************************************************
      *
-     *  device motion/orientation API
+     *  device motion/orientation callbacks
      *
      */
     function onAccelerationIncludingGravity(x, y, z, interval) {
