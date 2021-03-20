@@ -5,7 +5,7 @@ Very Basics
 
 Mobile Device Sensors and Actuators
 - [Device Motion and Orientation Sensors](./motion-sensors/)
-- [Bouncing Ball](./boundcing-ball/)
+- [Bouncing Ball](./bouncing-ball/)
 
 Client-Server with DB
 - [HTTP Message Board](./http-message-board/)
