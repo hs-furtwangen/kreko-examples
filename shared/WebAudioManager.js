@@ -13,7 +13,7 @@ class WebAudioManager {
                     .catch(() => reject());
             }
             else {
-                reject("no web audio");
+                reject("web audio not available");
             }
         });
     }
