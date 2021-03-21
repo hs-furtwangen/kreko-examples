@@ -44,7 +44,7 @@ class StartScreen {
           })
           .catch((error) => {
             this.setError(error);
-            reject(error);
+            //reject(error); // dead end :-)
           });
       });
     });
