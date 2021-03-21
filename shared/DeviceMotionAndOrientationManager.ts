@@ -68,7 +68,7 @@ class DeviceMotionAndOrientationManager implements ResourceManager {
           window.addEventListener("deviceorientation", this.onDeviceOrientation);
         }
       } else {
-        reject("no device motion/orientation available");
+        reject("device motion/orientation not available");
       }
     });
   }
