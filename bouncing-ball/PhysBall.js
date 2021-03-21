@@ -27,11 +27,11 @@ class BouncingBall {
         this.rebounceFactor = 0.9;
         this.impactThreshold = 1;
         /* position, velocity, acceleration */
-        this.pos = new ThreeDim(); // 3D relative position (-1 ... 1)
-        this.vel = new ThreeDim(); // v3D eleoity
-        this.acc = new ThreeDim(); // 3D accelertion
-        this.isRunning = false; /// whether the animation is still running
-        this.lastTime = null; // time of last animation frame
+        this.pos = new ThreeDim();
+        this.vel = new ThreeDim();
+        this.acc = new ThreeDim();
+        this.lastTime = null;
+        this.isRunning = false;
         this.canvas = null;
         this.canvas = canvas;
         this.onAnimationFrame = this.onAnimationFrame.bind(this);
@@ -78,32 +78,32 @@ class BouncingBall {
             pos.y += deltaTime * this.vel.y;
             pos.z += deltaTime * this.vel.z;
             // rebounce at the borders of teh screen
-            const rebounceFactor = this.rebounceFactor;
+            const rebounce = this.rebounceFactor;
             if (pos.x < -1) {
-                pos.x = -1 - 0.5 * rebounceFactor * (pos.x + 1);
+                pos.x = -1 - 0.5 * rebounce * (pos.x + 1);
                 vel.x *= -1;
             }
             else if (pos.x > 1) {
-                pos.x = 1 - 0.5 * rebounceFactor * (pos.x - 1);
+                pos.x = 1 - 0.5 * rebounce * (pos.x - 1);
                 vel.x *= -1;
             }
             if (pos.y < -1) {
-                pos.y = -1 - 0.5 * rebounceFactor * (pos.y + 1);
+                pos.y = -1 - 0.5 * rebounce * (pos.y + 1);
                 vel.y *= -1;
             }
             else if (pos.y > 1) {
-                pos.y = 1 - 0.5 * rebounceFactor * (pos.y - 1);
+                pos.y = 1 - 0.5 * rebounce * (pos.y - 1);
                 vel.y *= -1;
             }
             if (pos.z < -1) {
-                pos.z = -1 - 0.5 * rebounceFactor * (pos.z + 1);
+                pos.z = -1 - 0.5 * rebounce * (pos.z + 1);
                 vel.z *= -1;
             }
             else if (pos.z > 1) {
-                pos.z = 1 - 0.5 * rebounceFactor * (pos.z - 1);
+                pos.z = 1 - 0.5 * rebounce * (pos.z - 1);
                 vel.z *= -1;
             }
-            // adapt physics to device orientation
+            // adapt to device orientation
             let normX, normY;
             switch (window.orientation) {
                 case 0:
@@ -123,7 +123,6 @@ class BouncingBall {
                     normY = -pos.x;
                     break;
             }
-            // paint on canvas
             const halfWidth = 0.5 * width;
             const halfHeight = 0.5 * height;
             const x = halfWidth - normX * halfWidth;
@@ -135,26 +134,23 @@ class BouncingBall {
             ctx.clearRect(0, 0, width, height);
             ctx.arc(x, y, size, 0, 2 * Math.PI);
             ctx.fill();
-            // apply acceleration to velocity
+            // apply external acc
             vel.x += this.inertiaScale * deltaTime * acc.x;
             vel.y += this.inertiaScale * deltaTime * acc.y;
             vel.z += this.inertiaScale * deltaTime * acc.z;
-            // apply air friction to velocity
+            /* apply air friction */
             vel.x *= this.frictionFactor;
             vel.y *= this.frictionFactor;
             vel.z *= this.frictionFactor;
         }
         this.lastTime = now;
-        // request next animation frame if still running
         if (this.isRunning) {
             requestAnimationFrame(this.onAnimationFrame);
         }
     }
-    // adapt canvas to current screen size
     adaptCanvas() {
-        const rect = document.body.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
 }
-//# sourceMappingURL=BouncingBall.js.map
+//# sourceMappingURL=PhysBall.js.map

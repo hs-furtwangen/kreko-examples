@@ -2,25 +2,29 @@
 <html lang="de">
 
 <head>
-  <title>Device Motion and Orientation</title>
+  <title>Sample Pads</title>
   <meta charset="utf-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <link rel="stylesheet" href="../shared/start-screen.css">
     <link rel="stylesheet" href="styles.css">
     <script language="JavaScript" src="../shared/StartScreen.js" defer></script>
-  <script language="JavaScript" src="../shared/DeviceMotionAndOrientationManager.js" defer></script>
-  <script language="JavaScript" src="BouncingBall.js" defer></script>
-  <script language="JavaScript" src="scripts.js" defer></script>
+    <script language="JavaScript" src="../shared/WebAudioManager.js" defer></script>
+    <script language="JavaScript" src="scripts.js" defer></script>
 </head>
 
 <body>
   <div id="start-screen">
-    <h1>Bouncing Ball</h1>
+    <h1>Sample Pads</h1>
     <p></p>
   </div>
 
-  <canvas id="canvas" width="100" height="100"></canvas>
+  <div id="buttons">
+    <div class="button hidden" data-index="0"></div>
+    <div class="button hidden" data-index="1"></div>
+    <div class="button hidden" data-index="2"></div>
+    <div class="button hidden" data-index="3"></div>
+  </div>
 </body>
 
 </html>

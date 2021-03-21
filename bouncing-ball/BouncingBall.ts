@@ -180,7 +180,8 @@ class BouncingBall {
 
   // adapt canvas to current screen size
   adaptCanvas(): void {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    const rect: DOMRect = document.body.getBoundingClientRect();
+    this.canvas.width = rect.width;
+    this.canvas.height = rect.height;
   }
 }

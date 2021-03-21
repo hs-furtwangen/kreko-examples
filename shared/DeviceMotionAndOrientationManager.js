@@ -1,98 +1,79 @@
 "use strict";
 class DeviceMotionAndOrientationManager {
-    constructor(id) {
+    constructor() {
         this.timeout = null;
-        this.screenDiv = null;
-        this.textDiv = null;
         this.interval = 0;
         this.scaleAcc = 1; // scale factor to re-invert iOS acceleration
+        this.onMotion = null;
         this.onAccelerationIncludingGravity = null;
         this.onAcceleration = null;
         this.onRotationRate = null;
         this.onOrientation = null;
-        this.screenDiv = document.getElementById(id);
-        this.textDiv = this.screenDiv.querySelector(".start-screen-text");
-        this.setText("touch screen to start");
-        this.check = this.check.bind(this);
         this.onDeviceMotion = this.onDeviceMotion.bind(this);
         this.onDeviceOrientation = this.onDeviceOrientation.bind(this);
     }
-    setText(text) {
-        this.textDiv.innerHTML = text;
-    }
-    start() {
-        this.screenDiv.style.display = "block";
-        if (DeviceMotionEvent || DeviceOrientationEvent) {
-            // device/browser seems to support device motion and orientation, check it out
-            this.screenDiv.addEventListener("click", this.check);
-        }
-        else {
-            this.setText("device motion/orientation not available");
-        }
-    }
-    close() {
-        this.screenDiv.style.display = "none";
-    }
-    setTimeout(text, durationInMs = 1) {
-        this.timeout = setTimeout(() => {
-            this.timeout = null;
-            this.setText(text);
-        }, 1000 * durationInMs);
-    }
-    terminate() {
-        if (this.timeout !== null) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-            this.close();
-        }
-    }
-    check() {
-        // set click feedback text and remove listener
-        this.setText("checking for device motion/orientation...");
-        this.screenDiv.removeEventListener("click", this.check);
-        // set timeout in case that the API response, but no data is sent
-        this.setTimeout("no device motion/orientation data");
-        // ask device motion/orientation permission on iOS
-        if (DeviceMotionEvent.requestPermission || DeviceOrientationEvent.requestPermission) {
-            DeviceMotionEvent.requestPermission()
-                .then((response) => {
-                if (response == "granted") {
-                    // got permission, hide start overrlay and listenm
-                    this.close();
-                    if (this.onAccelerationIncludingGravity !== null ||
-                        this.onAcceleration !== null ||
-                        this.onRotationRate) {
-                        window.addEventListener("devicemotion", this.onDeviceMotion);
-                    }
-                    // re-invert inverted iOS acceleration values
-                    this.scaleAcc = -1;
+    getCheck() {
+        return new Promise((resolve, reject) => {
+            this.resolve = resolve;
+            // set timeout in case that the API response, but no data is sent
+            this.timeout = setTimeout(() => {
+                this.timeout = null;
+                reject("no device motion/orientation data streams");
+            }, 1000);
+            if (DeviceMotionEvent || DeviceOrientationEvent) {
+                // ask device motion/orientation permission on iOS
+                if (DeviceMotionEvent.requestPermission || DeviceOrientationEvent.requestPermission) {
+                    DeviceMotionEvent.requestPermission()
+                        .then((response) => {
+                        if (response == "granted") {
+                            // got permission, hide start overrlay and listenm
+                            resolve();
+                            if (this.onMotion !== null ||
+                                this.onAccelerationIncludingGravity !== null ||
+                                this.onAcceleration !== null ||
+                                this.onRotationRate !== null) {
+                                window.addEventListener("devicemotion", this.onDeviceMotion);
+                            }
+                            // re-invert inverted iOS acceleration values
+                            this.scaleAcc = -1;
+                        }
+                        else {
+                            reject("no permission for device motion");
+                        }
+                    })
+                        .catch(console.error);
+                    DeviceOrientationEvent.requestPermission()
+                        .then((response) => {
+                        if (response == "granted") {
+                            if (this.onOrientation !== null) {
+                                window.addEventListener("deviceorientation", this.onDeviceOrientation);
+                            }
+                            resolve();
+                        }
+                        else {
+                            reject("no permission for device orientation");
+                        }
+                    })
+                        .catch(console.error);
                 }
                 else {
-                    this.setText("no permission for device motion");
+                    window.addEventListener("devicemotion", this.onDeviceMotion);
+                    window.addEventListener("deviceorientation", this.onDeviceOrientation);
                 }
-            })
-                .catch(console.error);
-            DeviceOrientationEvent.requestPermission()
-                .then((response) => {
-                if (response == "granted") {
-                    if (this.onOrientation !== null) {
-                        window.addEventListener("deviceorientation", this.onDeviceOrientation);
-                    }
-                    this.close();
-                }
-                else {
-                    this.setText("no permission for device orientation");
-                }
-            })
-                .catch(console.error);
-        }
-        else {
-            window.addEventListener("devicemotion", this.onDeviceMotion);
-            window.addEventListener("deviceorientation", this.onDeviceOrientation);
-        }
+            }
+            else {
+                reject("no device motion/orientation available");
+            }
+        });
     }
     onDeviceMotion(evt) {
-        this.close();
+        this.resolve();
+        if (this.onMotion !== null) {
+            const accig = evt.accelerationIncludingGravity;
+            const acc = evt.acceleration;
+            const rot = evt.rotationRate;
+            this.onMotion(this.scaleAcc * accig.x, this.scaleAcc * accig.y, this.scaleAcc * accig.z, this.scaleAcc * acc.x, this.scaleAcc * acc.y, this.scaleAcc * acc.z, rot.alpha, rot.beta, rot.gamma, evt.interval);
+        }
         if (this.onAccelerationIncludingGravity !== null) {
             const accig = evt.accelerationIncludingGravity;
             this.onAccelerationIncludingGravity(this.scaleAcc * accig.x, this.scaleAcc * accig.y, this.scaleAcc * accig.z, evt.interval);
@@ -107,7 +88,7 @@ class DeviceMotionAndOrientationManager {
         }
     }
     onDeviceOrientation(evt) {
-        this.close();
+        this.resolve();
         if (this.onOrientation !== null) {
             this.onOrientation(evt.alpha, evt.beta, evt.gamma);
         }

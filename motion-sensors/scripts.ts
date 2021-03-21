@@ -1,12 +1,15 @@
 namespace motionSensors {
-  const motionManager: DeviceMotionAndOrientationManager = new DeviceMotionAndOrientationManager("start-screen");
-  
+  // create device motion/orientation manager and register motion callbacks
+  const motionManager: DeviceMotionAndOrientationManager = new DeviceMotionAndOrientationManager();
   motionManager.onAccelerationIncludingGravity = onAccelerationIncludingGravity;
   motionManager.onAcceleration = onAcceleration;
   motionManager.onRotationRate = onRotationRate;
   motionManager.onOrientation = onOrientation;
 
-  motionManager.start();
+  // create start screen and register device motion/orientation manager
+  const startScreen: StartScreen = new StartScreen("start-screen");
+  startScreen.addResourceManager(motionManager);
+  startScreen.start();
 
   /********************************************************
    * 

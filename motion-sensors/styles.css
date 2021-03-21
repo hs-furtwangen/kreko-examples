@@ -26,28 +26,6 @@ hr {
   border-top-color: #000;
 }
 
-#start-screen {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  z-index: 1;
-}
-
-.start-screen-text {
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  top: 33%;
-  width: 100%;
-  text-align: center;
-  line-height: 40px;
-  padding: 0 10%;
-  font-size: 20px;
-}
-
 .number-with-bar {
   position: relative;
   width: 100%;

@@ -1,12 +1,17 @@
 # KreKo Example Code
 
-Very Basics
+## Very Basics
 - [Hello World (with HTML, CSS and TypeScript)](./hello-world)
 
-Mobile Device Sensors and Actuators
-- [Device Motion and Orientation Sensors](./motion-sensors/)
+## Mobile Device Sensors and Actuators
+
+### Device Motion and Orientation
+- [Raw Sensor Values](./motion-sensors/)
 - [Shake'n'Flash](./shake-n-flash/)
 - [Bouncing Ball](./bouncing-ball/)
 
-Client-Server with DB
+### Audio/Video
+- [Samples Pads](./sample-pads/)
+
+## Client-Server with DB
 - [HTTP Message Board](./http-message-board/)

@@ -1,10 +1,14 @@
 "use strict";
-var motionSensors;
-(function (motionSensors) {
-    const motionManager = new DeviceMotionAndOrientationManager("start-screen");
-    motionManager.onAcceleration = onAcceleration;
-    motionManager.start();
+var shakeNFlash;
+(function (shakeNFlash) {
     const flashDiv = document.getElementById("flash");
+    // create device motion/orientation manager and register motion callback
+    const motionManager = new DeviceMotionAndOrientationManager();
+    motionManager.onAcceleration = onAcceleration;
+    // create start screen and register device motion/orientation manager
+    const startScreen = new StartScreen("start-screen");
+    startScreen.addResourceManager(motionManager);
+    startScreen.start();
     function onAcceleration(x, y, z) {
         const normX = Math.min(1, Math.max(0, 0.05 * x));
         const normY = Math.min(1, Math.max(0, 0.05 * y));
@@ -12,5 +16,5 @@ var motionSensors;
         const accMag = normX * normX + normY * normY + normZ + normZ;
         flashDiv.style.opacity = Math.min(1, accMag).toString();
     }
-})(motionSensors || (motionSensors = {}));
+})(shakeNFlash || (shakeNFlash = {}));
 //# sourceMappingURL=scripts.js.map
