@@ -28,7 +28,7 @@ class StartScreen {
       this.setText("touch screen to start");
 
       this.screenDiv.addEventListener("click", () => {
-        this.setText("checking for device motion/orientation...");
+        this.setText("checking for resources...");
 
         const promises: Promise<void>[] = [];
 

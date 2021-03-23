@@ -74,13 +74,16 @@ class DeviceMotionAndOrientationManager implements ResourceManager {
   }
 
   onDeviceMotion(evt: DeviceMotionEvent): void {
-    this.resolve();
+    if (this.timeout !== null) {
+      this.resolve();
+      clearTimeout(this.timeout);
+    }
 
     if (this.onMotion !== null) {
       const accig: DeviceMotionEventAcceleration = evt.accelerationIncludingGravity;
       const acc: DeviceMotionEventAcceleration = evt.acceleration;
       const rot: DeviceMotionEventRotationRate = evt.rotationRate;
-      
+
       this.onMotion(this.scaleAcc * accig.x, this.scaleAcc * accig.y, this.scaleAcc * accig.z,
         this.scaleAcc * acc.x, this.scaleAcc * acc.y, this.scaleAcc * acc.z,
         rot.alpha, rot.beta, rot.gamma,
@@ -104,7 +107,10 @@ class DeviceMotionAndOrientationManager implements ResourceManager {
   }
 
   onDeviceOrientation(evt: DeviceOrientationEvent): void {
-    this.resolve();
+    if (this.timeout !== null) {
+      this.resolve();
+      clearTimeout(this.timeout);
+    }
 
     if (this.onOrientation !== null) {
       this.onOrientation(evt.alpha, evt.beta, evt.gamma);

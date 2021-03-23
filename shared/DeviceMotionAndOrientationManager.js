@@ -67,7 +67,10 @@ class DeviceMotionAndOrientationManager {
         });
     }
     onDeviceMotion(evt) {
-        this.resolve();
+        if (this.timeout !== null) {
+            this.resolve();
+            clearTimeout(this.timeout);
+        }
         if (this.onMotion !== null) {
             const accig = evt.accelerationIncludingGravity;
             const acc = evt.acceleration;
@@ -88,7 +91,10 @@ class DeviceMotionAndOrientationManager {
         }
     }
     onDeviceOrientation(evt) {
-        this.resolve();
+        if (this.timeout !== null) {
+            this.resolve();
+            clearTimeout(this.timeout);
+        }
         if (this.onOrientation !== null) {
             this.onOrientation(evt.alpha, evt.beta, evt.gamma);
         }

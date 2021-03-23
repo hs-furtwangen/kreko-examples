@@ -47,7 +47,6 @@ class BouncingBall {
 
     window.addEventListener("resize", this.adaptCanvas);
     this.adaptCanvas();
-
   }
 
   reset(): void {

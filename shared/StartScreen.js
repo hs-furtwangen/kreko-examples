@@ -19,7 +19,7 @@ class StartScreen {
             this.screenDiv.style.display = "block";
             this.setText("touch screen to start");
             this.screenDiv.addEventListener("click", () => {
-                this.setText("checking for device motion/orientation...");
+                this.setText("checking for resources...");
                 const promises = [];
                 for (let manager of this.managers) {
                     const promise = manager.getCheck();
