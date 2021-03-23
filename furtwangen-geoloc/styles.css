@@ -1,0 +1,85 @@
+body {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background-color: #000;
+  font-family: Helvetica, sans-serif;
+}
+
+#points {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.point {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-bottom: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  opacity: 1;
+  transition-property: left, bottom, width, height, margin-bottom, margin-left, opactity;
+  transition-duration: 400ms;
+}
+
+.point.user {
+  background-color: yellow;
+}
+
+.point.i-bau {
+  background-color: mediumslateblue;
+}
+
+.point.donau-quelle {
+  background-color: turquoise;
+}
+
+.point.breathe {
+  width: 80px;
+  height: 80px;
+  margin-bottom: -40px;
+  margin-left: -40px;
+  opacity: 0.5;
+}
+
+.accuracy.user {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: yellow;
+  opacity: 0.25;
+}
+
+#text-fields {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+}
+
+.text-field {
+  font-size: 1em;
+  padding: 2px;
+}
+
+.text-field.user {
+  color: yellow;
+}
+
+.text-field.i-bau {
+  color: mediumslateblue;
+}
+
+.text-field.donau-quelle {
+  color: turquoise;
+}

@@ -10,6 +10,9 @@
 - [Shake'n'Flash](./shake-n-flash/)
 - [Bouncing Ball](./bouncing-ball/)
 
+### GPS Geolocation
+- [Furtwangen Geoloc](./furtwangen-geoloc/)
+
 ### Audio/Video
 - [Samples Pads](./sample-pads/)
 
