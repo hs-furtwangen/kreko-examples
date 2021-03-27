@@ -1,14 +1,13 @@
 "use strict";
 class DeviceMotionAndOrientationManager {
     constructor() {
-        this.timeout = null;
-        this.interval = 0;
-        this.scaleAcc = 1; // scale factor to re-invert iOS acceleration
         this.onMotion = null;
         this.onAccelerationIncludingGravity = null;
         this.onAcceleration = null;
         this.onRotationRate = null;
         this.onOrientation = null;
+        this.timeout = null;
+        this.scaleAcc = 1; // scale factor to re-invert iOS acceleration
         this.onDeviceMotion = this.onDeviceMotion.bind(this);
         this.onDeviceOrientation = this.onDeviceOrientation.bind(this);
     }

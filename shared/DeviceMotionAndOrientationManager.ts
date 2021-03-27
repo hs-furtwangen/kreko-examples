@@ -1,15 +1,13 @@
 class DeviceMotionAndOrientationManager implements ResourceManager {
-  resolve: Function;
-  timeout: NodeJS.Timeout = null;
+  public onMotion: Function = null;
+  public onAccelerationIncludingGravity: Function = null;
+  public onAcceleration: Function = null;
+  public onRotationRate: Function = null;
+  public onOrientation: Function = null;
 
-  interval: number = 0;
-  scaleAcc: number = 1; // scale factor to re-invert iOS acceleration
-
-  onMotion: Function = null;
-  onAccelerationIncludingGravity: Function = null;
-  onAcceleration: Function = null;
-  onRotationRate: Function = null;
-  onOrientation: Function = null;
+  private resolve: Function;
+  private timeout: NodeJS.Timeout = null;
+  private scaleAcc: number = 1; // scale factor to re-invert iOS acceleration
 
   constructor() {
     this.onDeviceMotion = this.onDeviceMotion.bind(this);

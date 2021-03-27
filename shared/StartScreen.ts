@@ -3,9 +3,9 @@ interface ResourceManager {
 }
 
 class StartScreen {
-  screenDiv: HTMLDivElement = null;
-  textDiv: HTMLDivElement = null;
-  managers: ResourceManager[] = [];
+  private screenDiv: HTMLDivElement = null;
+  private textDiv: HTMLDivElement = null;
+  private managers: ResourceManager[] = [];
 
   constructor(id: string) {
     this.screenDiv = <HTMLDivElement>document.getElementById(id);
@@ -13,6 +13,7 @@ class StartScreen {
   }
 
   setText(text: string): void {
+    this.textDiv.classList.remove("error");
     this.textDiv.innerHTML = text;
   }
 

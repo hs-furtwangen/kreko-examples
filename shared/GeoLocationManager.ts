@@ -1,8 +1,6 @@
 class GeoLocationManager implements ResourceManager {
-  timeout: NodeJS.Timeout = null;
-  onLocation: Function = null;
-  coords: GeolocationCoordinates = null;
-  timestamp: number = null;
+  public onLocation: Function = null;
+  private timeout: NodeJS.Timeout = null;
 
   getCheck(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -15,9 +13,6 @@ class GeoLocationManager implements ResourceManager {
         }, 7000);
 
         navigator.geolocation.getCurrentPosition((position) => {
-          this.coords = this.coords;
-          this.timestamp = this.timestamp;
-
           if (this.timeout !== null) {
             resolve();
             clearTimeout(this.timeout);

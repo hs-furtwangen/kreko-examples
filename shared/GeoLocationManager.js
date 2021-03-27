@@ -1,10 +1,8 @@
 "use strict";
 class GeoLocationManager {
     constructor() {
-        this.timeout = null;
         this.onLocation = null;
-        this.coords = null;
-        this.timestamp = null;
+        this.timeout = null;
     }
     getCheck() {
         return new Promise((resolve, reject) => {
@@ -15,8 +13,6 @@ class GeoLocationManager {
                     reject("no geolocation data");
                 }, 7000);
                 navigator.geolocation.getCurrentPosition((position) => {
-                    this.coords = this.coords;
-                    this.timestamp = this.timestamp;
                     if (this.timeout !== null) {
                         resolve();
                         clearTimeout(this.timeout);

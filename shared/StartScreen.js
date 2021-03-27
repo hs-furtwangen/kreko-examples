@@ -8,6 +8,7 @@ class StartScreen {
         this.textDiv = this.screenDiv.querySelector("p");
     }
     setText(text) {
+        this.textDiv.classList.remove("error");
         this.textDiv.innerHTML = text;
     }
     setError(text) {
