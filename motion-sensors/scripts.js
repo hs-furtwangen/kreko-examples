@@ -7,6 +7,7 @@ var motionSensors;
     motionManager.onAcceleration = onAcceleration;
     motionManager.onRotationRate = onRotationRate;
     motionManager.onOrientation = onOrientation;
+    // motionManager.onMotion = onmotion; // also exists
     // create start screen and register device motion/orientation manager
     const startScreen = new StartScreen("start-screen");
     startScreen.addResourceManager(motionManager);
@@ -95,6 +96,8 @@ var motionSensors;
         setNumber(oriNumbers[1], beta);
         setNumber(oriNumbers[2], gamma);
     }
+    // function onMotion(accigX, accigY, accigZ, accX, accY, accZ, rotAlpha, rotBeta, rotGamma, interval) {
+    // }
     /********************************************************
      *
      *  display functions

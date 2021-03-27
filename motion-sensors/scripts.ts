@@ -5,6 +5,8 @@ namespace motionSensors {
   motionManager.onAcceleration = onAcceleration;
   motionManager.onRotationRate = onRotationRate;
   motionManager.onOrientation = onOrientation;
+  // motionManager.onMotion = onmotion; // also exists
+
 
   // create start screen and register device motion/orientation manager
   const startScreen: StartScreen = new StartScreen("start-screen");
@@ -72,9 +74,9 @@ namespace motionSensors {
    * 
    */
   function onAccelerationIncludingGravity(x: number, y: number, z: number, interval: number): void {
-    setBiBar(accigBars[0], x  / 20);
-    setBiBar(accigBars[1], y  / 20);
-    setBiBar(accigBars[2], z  / 20);
+    setBiBar(accigBars[0], x / 20);
+    setBiBar(accigBars[1], y / 20);
+    setBiBar(accigBars[2], z / 20);
     setNumber(accigNumbers[0], x);
     setNumber(accigNumbers[1], y);
     setNumber(accigNumbers[2], z);
@@ -83,9 +85,9 @@ namespace motionSensors {
   }
 
   function onAcceleration(x: number, y: number, z: number): void {
-    setBiBar(accBars[0], x  / 20);
-    setBiBar(accBars[1], y  / 20);
-    setBiBar(accBars[2], z  / 20);
+    setBiBar(accBars[0], x / 20);
+    setBiBar(accBars[1], y / 20);
+    setBiBar(accBars[2], z / 20);
     setNumber(accNumbers[0], x);
     setNumber(accNumbers[1], y);
     setNumber(accNumbers[2], z);
@@ -108,6 +110,9 @@ namespace motionSensors {
     setNumber(oriNumbers[1], beta);
     setNumber(oriNumbers[2], gamma);
   }
+
+  // function onMotion(accigX, accigY, accigZ, accX, accY, accZ, rotAlpha, rotBeta, rotGamma, interval) {
+  // }
 
   /********************************************************
    * 
