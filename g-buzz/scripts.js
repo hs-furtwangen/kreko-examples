@@ -20,25 +20,35 @@ var shakeNFlash;
     startScreen.start().then(() => {
         startOscillators();
     });
+    /*****************************************************
+     *
+     *  utilitiy functions
+     *
+     */
     class FilteredOscillator {
         constructor(type, frequency = 220, minCutoffFreq = 20, maxCutoffFreq = audioManager.context.sampleRate) {
             const audioContext = audioManager.context;
             const now = audioContext.currentTime;
+            // create 2 detuned oscillators
             const osc1 = audioContext.createOscillator();
             osc1.type = type;
-            osc1.frequency.value = 1.003 * frequency;
+            osc1.frequency.value = frequency;
+            osc1.detune.value = 4;
             osc1.start(now);
             const osc2 = audioContext.createOscillator();
             osc2.type = type;
-            osc2.frequency.value = 0.997 * frequency;
+            osc2.frequency.value = frequency;
+            osc2.detune.value = -4;
             osc2.start(now);
             this.minCutoffFreq = minCutoffFreq;
             this.maxCutoffFreq = maxCutoffFreq;
             this.logCutoffRatio = Math.log(this.maxCutoffFreq / this.minCutoffFreq);
+            // create and configure lowpass
             const lowpass = audioContext.createBiquadFilter();
             lowpass.type = "lowpass";
             lowpass.frequency.value = this.minCutoffFreq;
             lowpass.Q.value = 0;
+            // connect  both oscillators to lowpass and lowpass to audio output
             osc1.connect(lowpass);
             osc2.connect(lowpass);
             lowpass.connect(audioContext.destination);
@@ -55,12 +65,12 @@ var shakeNFlash;
         }
     }
     function startOscillators() {
-        oPX = new FilteredOscillator("sawtooth", 0.25 * 261.63, 50, 3000);
-        oNX = new FilteredOscillator("sawtooth", 0.25 * 369.99, 50, 3000);
-        oPY = new FilteredOscillator("sawtooth", 0.25 * 293.66, 50, 3000);
-        oNY = new FilteredOscillator("sawtooth", 0.25 * 415.30, 50, 3000);
-        oPZ = new FilteredOscillator("sawtooth", 0.25 * 329.63, 50, 3000);
-        oNZ = new FilteredOscillator("sawtooth", 0.25 * 466.16, 50, 3000);
+        oPX = new FilteredOscillator("sawtooth", 200, 50, 3000);
+        oNX = new FilteredOscillator("sawtooth", 300, 50, 3000);
+        oPY = new FilteredOscillator("sawtooth", 150, 50, 3000);
+        oNY = new FilteredOscillator("sawtooth", 250, 50, 3000);
+        oPZ = new FilteredOscillator("sawtooth", 100, 50, 3000);
+        oNZ = new FilteredOscillator("sawtooth", 50, 50, 3000);
     }
     function onAccelerationIncludingGravity(x, y, z) {
         const pX = Math.min(1, Math.max(0, x / 9.81));

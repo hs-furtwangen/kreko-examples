@@ -7,6 +7,7 @@
 
 ### Device Motion and Orientation
 - [Raw Sensor Values](./motion-sensors/)
+- [G-Buzz](./g-buzz/)
 - [Shake'n'Flash](./shake-n-flash/)
 - [Bouncing Ball](./bouncing-ball/)
 
