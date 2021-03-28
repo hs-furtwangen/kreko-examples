@@ -27,6 +27,7 @@ namespace photoBooth {
     });
   });
 
+  // take a snapshot by copying video into image via (hidden) canvas
   function takeSnapshot(): void {
     const context: CanvasRenderingContext2D = canvas.getContext("2d");
     context.drawImage(video, videoX, videoY, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
@@ -34,16 +35,21 @@ namespace photoBooth {
     const srcDataUrl: string = canvas.toDataURL("image/png");
     image.setAttribute("src", srcDataUrl);
 
+    // hide video and show image
     video.classList.add("hide");
     image.classList.remove("hide");
 
+    // update instructions overlay
     instructions.innerHTML = "tap screen to display camera capture";
   }
 
+  // return to live video display
   function resetVideo(): void {
+    // hide image and show video
     image.classList.add("hide");
     video.classList.remove("hide");
 
+    // update instructions overlay
     instructions.innerHTML = "tap screen to take a snapshot";
   }
 
@@ -84,6 +90,7 @@ namespace photoBooth {
     video.style.left = `${-videoScreenX}px`;
     video.style.top = `${-videoScreenY}px`;
 
+    // show live video
     resetVideo();
   }
 }

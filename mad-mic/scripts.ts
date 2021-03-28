@@ -7,22 +7,22 @@ namespace madMic {
   const audioManager: WebAudioManager = new WebAudioManager();
   const userMediaManager: UserMediaManager = new UserMediaManager({ video: false, audio: true });
 
-  // create start screen and register user resource managers
+  // create start screen and register resource managers
   const startScreen: StartScreen = new StartScreen("start-screen");
   startScreen.addResourceManager(audioManager);
   startScreen.addResourceManager(userMediaManager);
 
-  // start (creates audio context )
+  // start (creates audio effect and starts animation)
   startScreen.start().then(() => {
     const audioContext: AudioContext = audioManager.context;
     const source: AudioNode = audioContext.createMediaStreamSource(userMediaManager.stream);
     const destination: AudioNode = audioContext.destination;
 
+    // create audio analyser and array for calculation
     analyser = audioContext.createAnalyser();
     analyserArray = new Uint8Array(analyser.fftSize);
 
-    requestAnimationFrame(displayIntensity);
-
+    // create audio effect
     const effect: AudioEffect = new DoubleHelix(audioContext, source, destination, {
       delayTime: 0.1,
       feedbackGain: 0.9,
@@ -30,8 +30,12 @@ namespace madMic {
       modDepth: 0.3,
     });
 
-    effect.start();
+    // connect analyser and start effect
     effect.output.connect(analyser);
+    effect.start();
+
+    // start animation
+    requestAnimationFrame(displayIntensity);
   });
 
   function displayIntensity(): void {
@@ -48,15 +52,16 @@ namespace madMic {
 
     const intensity: number = Math.sqrt(sum / analyserSize); // raw intensity
 
-    // map intensity to circle opacity
-    const opacity: number = Math.min(1, 0.333 + 10 * intensity);
-    circle.style.opacity = opacity.toString();
-
     // map intensity to circle size
     const circleSize: number = 50 + 400 * intensity;
     circle.style.width = circle.style.height = `${circleSize}px`;
     circle.style.marginTop = circle.style.marginLeft = `${-0.5 * circleSize}px`;
 
+    // map intensity to circle opacity
+    const opacity: number = Math.min(1, 0.333 + 10 * intensity);
+    circle.style.opacity = opacity.toString();
+
+    // continue animation
     requestAnimationFrame(displayIntensity);
   }
 }

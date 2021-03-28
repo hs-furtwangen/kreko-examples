@@ -24,18 +24,24 @@ var photoBooth;
             image.addEventListener("click", resetVideo);
         });
     });
+    // take a snapshot by copying video into image via (hidden) canvas
     function takeSnapshot() {
         const context = canvas.getContext("2d");
         context.drawImage(video, videoX, videoY, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);
         const srcDataUrl = canvas.toDataURL("image/png");
         image.setAttribute("src", srcDataUrl);
+        // hide video and show image
         video.classList.add("hide");
         image.classList.remove("hide");
+        // update instructions overlay
         instructions.innerHTML = "tap screen to display camera capture";
     }
+    // return to live video display
     function resetVideo() {
+        // hide image and show video
         image.classList.add("hide");
         video.classList.remove("hide");
+        // update instructions overlay
         instructions.innerHTML = "tap screen to take a snapshot";
     }
     // adapt video element to current screen size
@@ -69,6 +75,7 @@ var photoBooth;
         video.height = videoScreenHeight;
         video.style.left = `${-videoScreenX}px`;
         video.style.top = `${-videoScreenY}px`;
+        // show live video
         resetVideo();
     }
 })(photoBooth || (photoBooth = {}));

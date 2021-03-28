@@ -16,7 +16,7 @@ class StartScreen {
         this.textDiv.innerHTML = text;
     }
     start() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.screenDiv.style.display = "block";
             this.setText("touch screen to start");
             this.screenDiv.addEventListener("click", () => {

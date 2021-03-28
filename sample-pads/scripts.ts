@@ -53,6 +53,6 @@ namespace samplePads {
     target.classList.add("active");
     setTimeout(() => target.classList.remove("active"), 200);
 
-    evt.preventDefault(); // prevent mousedown emulation
+    evt.preventDefault(); // prevent mousedown emulation with iOS touch
   }
 }

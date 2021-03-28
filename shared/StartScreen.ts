@@ -23,7 +23,7 @@ class StartScreen {
   }
 
   start(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.screenDiv.style.display = "block";
 
       this.setText("touch screen to start");
