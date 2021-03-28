@@ -14,7 +14,9 @@
 - [Furtwangen Geoloc](./furtwangen-geoloc/)
 
 ### Audio/Video
+- [Photo Booth](./photo-booth/)
 - [Samples Pads](./sample-pads/)
+- [Mad Mic](./mad-mic/)
 
 ## Client-Server with DB
 - [HTTP Message Board](./http-message-board/)
