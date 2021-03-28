@@ -16,7 +16,7 @@ var samplePads;
         });
         request.send();
     }
-    // create start screen and register 
+    // create web audio manager
     const audioManager = new WebAudioManager();
     // create start screen and register web audio manager
     const startScreen = new StartScreen("start-screen");

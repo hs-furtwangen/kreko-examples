@@ -17,7 +17,7 @@ namespace samplePads {
     request.send();
   }
 
-  // create start screen and register 
+  // create web audio manager
   const audioManager: WebAudioManager = new WebAudioManager();
 
   // create start screen and register web audio manager

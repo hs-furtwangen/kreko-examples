@@ -8,11 +8,11 @@ namespace photoBooth {
   let videoX: number = null;
   let videoY: number = null;
 
-  // create start screen and register 
+  // create user media manager and assign video element
   const userMediaManager: UserMediaManager = new UserMediaManager({ video: true, audio: false });
   userMediaManager.videoElement = video;
 
-  // create start screen and register web audio manager
+  // create start screen and register user media manager
   const startScreen: StartScreen = new StartScreen("start-screen");
   startScreen.addResourceManager(userMediaManager);
 

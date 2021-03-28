@@ -9,10 +9,10 @@ var photoBooth;
     let imageHeight = null;
     let videoX = null;
     let videoY = null;
-    // create start screen and register 
+    // create user media manager and assign video element
     const userMediaManager = new UserMediaManager({ video: true, audio: false });
     userMediaManager.videoElement = video;
-    // create start screen and register web audio manager
+    // create start screen and register user media manager
     const startScreen = new StartScreen("start-screen");
     startScreen.addResourceManager(userMediaManager);
     // start (creates audio context )
