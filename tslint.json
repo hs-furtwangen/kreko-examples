@@ -21,7 +21,7 @@
 		"no-parameter-properties": true,
 		"no-debugger": false,
 		"no-duplicate-variable": true,
-		"no-empty": true,
+		"no-empty": false,
 		"no-eval": true,
 		"no-string-literal": false,
 		"no-switch-case-fall-through": false,
