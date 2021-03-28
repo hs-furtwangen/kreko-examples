@@ -5,9 +5,11 @@ var HttpMessageBoard;
     const messageListDiv = document.getElementById("message-list");
     const clearButton = document.getElementById("clear-button");
     // register click listener on clear button
-    clearButton.addEventListener("click", () => {
-        sendClearCommandToServer();
-    });
+    if (clearButton !== null) {
+        clearButton.addEventListener("click", () => {
+            HttpMessageBoard.sendPostRequest("/clear", "");
+        });
+    }
     // periodically poll list of messages from server
     setInterval(getMessageListfromServer, 1000);
     /***********************************************************
@@ -32,9 +34,6 @@ var HttpMessageBoard;
         catch (err) {
             console.error("fetch error: ", err);
         }
-    }
-    function sendClearCommandToServer() {
-        HttpMessageBoard.sendPostRequest("/clear", "");
     }
 })(HttpMessageBoard || (HttpMessageBoard = {}));
 //# sourceMappingURL=board.js.map
