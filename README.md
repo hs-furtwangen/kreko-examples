@@ -14,7 +14,7 @@
 ### GPS Geolocation
 - [Furtwangen Geoloc](./furtwangen-geoloc/)
 
-### Audio/Video
+### Audio/Video Input/Output
 - [Photo Booth](./photo-booth/)
 - [Samples Pads](./sample-pads/)
 - [Mad Mic](./mad-mic/)
