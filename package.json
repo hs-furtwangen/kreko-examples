@@ -5,11 +5,11 @@
   "main": "server.js",
   "devDependencies": {
     "@types/mongodb": "^3.6.9",
-    "@types/node": "^14.14.31"
+    "@types/node": "^14.14.31",
+    "@types/ws": "^7.4.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "norbert.schnell@hs-furtwangen.de",
   "license": "BSD"
