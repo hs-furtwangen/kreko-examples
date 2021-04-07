@@ -1,13 +1,14 @@
+"use strict";
 /**
  * An example on how to you pure html element to create
  * an interactive visualization
  *
  * Gabriel Rausch (2021)
  */
-var displayHTMLOnly;
-(function (displayHTMLOnly) {
-    var autoLeft = 150;
-    var timer = 0;
+var displayHTMLSoapRacer;
+(function (displayHTMLSoapRacer) {
+    let autoLeft = 150;
+    let timer = 0;
     window.onload = function () {
         document.querySelector("#auto").addEventListener("mouseover", drive, false);
         window.setInterval(setTimer, 1000);
@@ -23,4 +24,5 @@ var displayHTMLOnly;
         timer++;
         document.getElementById("zeitanzeige").innerHTML = timer + "s";
     }
-})(displayHTMLOnly || (displayHTMLOnly = {}));
+})(displayHTMLSoapRacer || (displayHTMLSoapRacer = {}));
+//# sourceMappingURL=script.js.map
