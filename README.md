@@ -1,7 +1,9 @@
 # KreKo Example Code
 
-## Very Basics
+## HTML, CSS, JavaScript/TypeScript Basics
 - [Hello World (with HTML, CSS and TypeScript)](./hello-world)
+- [Interactive display with HTML Elements](./display-html-soap-racer)
+- [Display Information with Canvas](./display-canvas-drawing)
 
 ## Mobile Device Sensors and Actuators
 
@@ -19,5 +21,5 @@
 - [Samples Pads](./sample-pads/)
 - [Mad Mic](./mad-mic/)
 
-## Client-Server with DB
-- [HTTP Message Board](./http-message-board/)
+<!-- ## Client-Server with DB>
+<!-- - [HTTP Message Board](./http-message-board/)>
