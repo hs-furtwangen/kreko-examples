@@ -1,14 +1,4 @@
 "use strict";
-function createConstBuffer(audioContext, duration = 0.1) {
-    const sampleRate = audioContext.sampleRate;
-    const bufferDuration = duration;
-    const bufferSize = bufferDuration * sampleRate;
-    const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
-    const channel = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++)
-        channel[i] = 1;
-    return buffer;
-}
 class AudioEffect {
     constructor(audioContext, source, destination) {
         this.audioContext = audioContext;
@@ -252,5 +242,15 @@ class FatalFractal extends AudioEffect {
     destroy() {
         this.pp.destroy();
     }
+}
+function createConstBuffer(audioContext, duration = 0.1) {
+    const sampleRate = audioContext.sampleRate;
+    const bufferDuration = duration;
+    const bufferSize = bufferDuration * sampleRate;
+    const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
+    const channel = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++)
+        channel[i] = 1;
+    return buffer;
 }
 //# sourceMappingURL=audio-effects.js.map

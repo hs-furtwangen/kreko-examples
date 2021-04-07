@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * Code example using the Media Stream (gerUserMedia) and Web Audio APIs
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
 var madMic;
 (function (madMic) {
     const circle = document.getElementById("circle");

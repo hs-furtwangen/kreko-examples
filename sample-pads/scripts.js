@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * Code example using the Web Audio API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
 var samplePads;
 (function (samplePads) {
     const soundsFileNames = ["bd.wav", "sd.wav", "ch.wav", "oh.wav"];

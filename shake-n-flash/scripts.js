@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * Code example using the Device Motion API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
 var shakeNFlash;
 (function (shakeNFlash) {
     const flashDiv = document.getElementById("flash");

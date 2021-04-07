@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * Code example using the Media Stream (gerUserMedia) API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
 var photoBooth;
 (function (photoBooth) {
     const video = document.getElementById("video");

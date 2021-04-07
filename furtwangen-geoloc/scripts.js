@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * Code example using the Geolocation API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
 var furtwangenGeoloc;
 (function (furtwangenGeoloc) {
     const pointsDiv = document.getElementById("points");

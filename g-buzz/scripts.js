@@ -1,6 +1,11 @@
 "use strict";
-var shakeNFlash;
-(function (shakeNFlash) {
+/**
+ * Code example using the Device Motion and Web Audio APIs
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+var gBuzz;
+(function (gBuzz) {
     const lightDiv = document.getElementById("light");
     let oPX = null;
     let oNX = null;
@@ -91,5 +96,5 @@ var shakeNFlash;
         oPZ.setIntensity(pZ);
         oNZ.setIntensity(nZ);
     }
-})(shakeNFlash || (shakeNFlash = {}));
+})(gBuzz || (gBuzz = {}));
 //# sourceMappingURL=scripts.js.map
