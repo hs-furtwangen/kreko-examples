@@ -1,6 +1,6 @@
 "use strict";
 /**
- * Code example using the Media Stream (gerUserMedia) API
+ * Code example using the Media Devices (gerUserMedia) API
  * (based on the StartScreen and ResourceManager abstractions)
  * Norbert Schnell, 2021
  */
