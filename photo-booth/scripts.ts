@@ -1,4 +1,9 @@
-namespace photoBooth {
+/**
+ * Code example using the Media Stream (gerUserMedia) API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+ namespace photoBooth {
   const video: HTMLVideoElement = <HTMLVideoElement>document.getElementById("video");
   const image: HTMLImageElement = <HTMLImageElement>document.getElementById("image");
   const instructions: HTMLDivElement = <HTMLDivElement>document.getElementById("instructions");

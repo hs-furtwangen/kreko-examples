@@ -1,4 +1,9 @@
-namespace shakeNFlash {
+/**
+ * Code example using the Device Motion and Web Audio APIs
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+ namespace gBuzz {
   const lightDiv: HTMLDivElement = <HTMLDivElement>document.getElementById("light");
   let oPX: FilteredOscillator = null;
   let oNX: FilteredOscillator = null;

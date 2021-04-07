@@ -1,4 +1,9 @@
-namespace furtwangenGeoloc {
+/**
+ * Code example using the Geolocation API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+ namespace furtwangenGeoloc {
   interface Point {
     label: string;
     element: HTMLDivElement;

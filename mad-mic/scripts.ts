@@ -1,4 +1,9 @@
-namespace madMic {
+/**
+ * Code example using the Media Stream (gerUserMedia) and Web Audio APIs
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+ namespace madMic {
   const circle: HTMLDivElement = <HTMLDivElement>document.getElementById("circle");
   let analyser: AnalyserNode = null;
   let analyserArray: Uint8Array = null;

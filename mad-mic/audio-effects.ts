@@ -1,16 +1,3 @@
-function createConstBuffer(audioContext: AudioContext, duration: number = 0.1): AudioBuffer {
-  const sampleRate: number = audioContext.sampleRate;
-  const bufferDuration: number = duration;
-  const bufferSize: number = bufferDuration * sampleRate;
-  const buffer: AudioBuffer = audioContext.createBuffer(1, bufferSize, sampleRate);
-
-  const channel: Float32Array = buffer.getChannelData(0);
-  for (let i: number = 0; i < bufferSize; i++)
-    channel[i] = 1;
-
-  return buffer;
-}
-
 class AudioEffect {
   audioContext: AudioContext;
   source: AudioNode;
@@ -376,5 +363,18 @@ class FatalFractal extends AudioEffect {
   destroy(): void {
     this.pp.destroy();
   }
+}
+
+function createConstBuffer(audioContext: AudioContext, duration: number = 0.1): AudioBuffer {
+  const sampleRate: number = audioContext.sampleRate;
+  const bufferDuration: number = duration;
+  const bufferSize: number = bufferDuration * sampleRate;
+  const buffer: AudioBuffer = audioContext.createBuffer(1, bufferSize, sampleRate);
+
+  const channel: Float32Array = buffer.getChannelData(0);
+  for (let i: number = 0; i < bufferSize; i++)
+    channel[i] = 1;
+
+  return buffer;
 }
 

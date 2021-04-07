@@ -1,4 +1,9 @@
-namespace samplePads {
+/**
+ * Code example using the Web Audio API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+ namespace samplePads {
   const soundsFileNames: string[] = ["bd.wav", "sd.wav", "ch.wav", "oh.wav"];
   const audioBuffers: AudioBuffer[] = [];
   const buttons: NodeListOf<HTMLDivElement> = document.querySelectorAll(".button");

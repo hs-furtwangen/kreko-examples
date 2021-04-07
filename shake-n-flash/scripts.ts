@@ -1,4 +1,9 @@
-namespace shakeNFlash {
+/**
+ * Code example using the Device Motion API
+ * (based on the StartScreen and ResourceManager abstractions)
+ * Norbert Schnell, 2021
+ */
+ namespace shakeNFlash {
   const flashDiv: HTMLDivElement = <HTMLDivElement>document.getElementById("flash");
 
   // create device motion/orientation manager and register motion callback
