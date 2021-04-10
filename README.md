@@ -10,6 +10,8 @@ This is a set of basic code examples using HTML, CSS and TypeScript:
 - [Canvas Drawing](./display-canvas-drawing),
   allows for drawing with different colors using an HTML canvas (2D)
 
+---
+
 ## Mobile Device Sensors and Actuators
 Below is a set of examples using mobile and media APIs:
 - [*Device Motion* and *Device Orientation*](https://developers.google.com/web/fundamentals/native-hardware/device-orientation){:target="_blank"}
@@ -43,5 +45,10 @@ Below is a set of examples using mobile and media APIs:
 
 ---
 
-<!-- ## Client-Server with DB -->
-<!-- - [HTTP Message Board](./http-message-board/) -->
+## Client-Server Communication
+These examples show how to communicate data between clients and servers:
+- [HTTP Message Board](./http-message-board/), a simple message board using HTTP requests
+- [Counter Pads](../kreko-counter-pads/), counts touches from all connected clients using Web Socket connections
+- [Simple Chat](../kreko-simple-chat/), very simple chat using Web Socket connections
+- [Photo Collector](../kreko-photo-collector/), collects photos via Web Socket connections
+
