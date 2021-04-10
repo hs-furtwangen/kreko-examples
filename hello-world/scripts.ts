@@ -18,4 +18,3 @@ function setRandomDivColor(): void {
   // print color to console
   console.log(color);
 }
-
