@@ -17,40 +17,65 @@ namespace displayCanvasDrawing {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        canvas.addEventListener("mousedown", onCanvasDown, false);
-        canvas.addEventListener("mouseup", onCanvasUp, false);
-        canvas.addEventListener("mousemove", onCanvasMove, false);
+        // support touch input
+        canvas.addEventListener("touchstart", onCanvasDown, false);
+        canvas.addEventListener("touchmove", onCanvasMove, false);
+        canvas.addEventListener("touchend", onCanvasUp, false);
+        canvas.addEventListener("touchcancel", onCanvasUp, false);
 
+        // and the good old mouse events as well :-)
+        canvas.addEventListener("mousedown", onCanvasDown, false);
+        canvas.addEventListener("mousemove", onCanvasMove, false);
+        canvas.addEventListener("mouseup", onCanvasUp, false);
+        canvas.addEventListener("mouseout", onCanvasUp, false);
+        
         let colorPickers: NodeListOf<HTMLDivElement> = document.querySelectorAll(".colorPicker");
         for (let index: number = 0; index < colorPickers.length; index++) {
             const colorPicker: HTMLDivElement = colorPickers[index];
+            
+            // this click handler is going to be adapted for touch, thus a separate handle
+            // is not needed
             colorPicker.addEventListener("click", onColorPickerClick, false);
 
         }
     };
 
-    function onCanvasDown(e: MouseEvent): void {
-        lastPosition = [e.pageX, e.pageY];
+    function onCanvasDown(e: MouseEvent | TouchEvent): void {
+        let x: number = (e as TouchEvent).changedTouches ?
+                 (e as TouchEvent).changedTouches[0].pageX :
+                 (e as MouseEvent).pageX;
+        let y: number = (e as TouchEvent).changedTouches ?
+                    (e as TouchEvent).changedTouches[0].pageY :
+                    (e as MouseEvent).pageY;
+        lastPosition = [x, y];
+        
         mouseIsDown = true;
     }
 
-    function onCanvasUp(e: MouseEvent): void {
+    function onCanvasUp(): void {
         mouseIsDown = false;
     }
 
-    function onCanvasMove(e: MouseEvent): void {
+    function onCanvasMove(e: MouseEvent | TouchEvent): void {
         if (mouseIsDown) {
 
             context.beginPath();
             context.moveTo(lastPosition[0], lastPosition[1]);
 
-            context.lineTo(e.pageX, e.pageY);
+            let x: number = (e as TouchEvent).changedTouches ?
+                (e as TouchEvent).changedTouches[0].pageX :
+                (e as MouseEvent).pageX;
+            let y: number = (e as TouchEvent).changedTouches ?
+                (e as TouchEvent).changedTouches[0].pageY :
+                (e as MouseEvent).pageY;
+               
+            context.lineTo(x, y);
             context.lineWidth = 5;
             context.strokeStyle = currentColor;
             context.lineCap = "round";
             context.lineJoin = "round";
             context.stroke();
-            lastPosition = [e.pageX, e.pageY];
+            lastPosition = [x, y];
         }
     }
 

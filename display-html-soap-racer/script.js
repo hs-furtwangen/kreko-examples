@@ -1,4 +1,3 @@
-"use strict";
 /**
  * An example on how to you pure html element to create
  * an interactive visualization
@@ -7,16 +6,16 @@
  */
 var displayHTMLSoapRacer;
 (function (displayHTMLSoapRacer) {
-    let autoLeft = 150;
-    let timer = 0;
+    var autoLeft = 0;
+    var timer = 0;
     window.onload = function () {
-        document.querySelector("#auto").addEventListener("mouseover", drive, false);
+        document.querySelector("#auto").addEventListener("click", drive, false);
         window.setInterval(setTimer, 1000);
     };
     function drive() {
-        autoLeft += 30;
+        autoLeft += window.innerWidth / 10;
         document.getElementById("auto").style.left = autoLeft + "px";
-        if (autoLeft > 1400) {
+        if (autoLeft > window.innerWidth * 0.75) {
             alert("Yeaaahhh!!! Zeit: " + timer + "s");
         }
     }
@@ -25,4 +24,3 @@ var displayHTMLSoapRacer;
         document.getElementById("zeitanzeige").innerHTML = timer + "s";
     }
 })(displayHTMLSoapRacer || (displayHTMLSoapRacer = {}));
-//# sourceMappingURL=script.js.map
