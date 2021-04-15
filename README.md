@@ -47,8 +47,13 @@ Below is a set of examples using mobile and media APIs:
 
 ## Client-Server Communication
 These examples show how to communicate data between clients and servers:
-- [HTTP Message Board](./http-message-board/), a simple message board using HTTP requests
-- [Counter Pads](../kreko-counter-pads/), counts touches from all connected clients using Web Socket connections
-- [Simple Chat](../kreko-simple-chat/), very simple chat using Web Socket connections
-- [Photo Collector](../kreko-photo-collector/), collects photos via Web Socket connections
+- [HTTP Message Board](./http-message-board/), 
+  a simple message board using HTTP requests
+- [Counter Pads](../kreko-counter-pads/), 
+  counts touches from all connected clients using Web Socket connections
+- [Simple Chat](../kreko-simple-chat/), 
+  very simple chat using Web Socket connections
+- [Photo Collector](../kreko-photo-collector/), 
+  collects photos via Web Socket connections
+- [Photo Collector Display](../kreko-photo-collector/display.html), collects photos via Web Socket connections
 
